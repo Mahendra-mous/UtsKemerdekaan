@@ -24,12 +24,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tugasuts.ui.theme.TugasutsTheme
 
+// Kelas data untuk rincian hadiah
 data class Hadiah(
     val kategori: String,
     val namaHadiah: String,
     val imageResId: Int
 )
 
+// Data untuk daftar hadiah
 val hadiahList = listOf(
     Hadiah("Juara 1", "Televisi LED 32 Inch", R.drawable.tv),
     Hadiah("Juara 1", "Sepeda Gunung", R.drawable.sepeda),
@@ -41,21 +43,22 @@ val hadiahList = listOf(
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        super.onCreate(savedInstanceState)  // Mengatur tampilan konten aplikasi
         setContent {
-            TugasutsTheme{
-                MainScreen()
+            TugasutsTheme{ // Menerapkan tema aplikasi
+                MainScreen() // Memanggil komposisi layar utama
             }
         }
     }
 }
 
+// Fungsi komposisi utama untuk aplikasi
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Hadiah Kemerdekaan") })
+            TopAppBar(title = { Text("Hadiah Kemerdekaan") }) //app bar untuk judul
         }
     ) { padding ->
         Column(
@@ -64,19 +67,21 @@ fun MainScreen() {
                 .padding(padding)
                 .padding(16.dp)
         ) {
-            Layout()
-            Image()
-            Input()
-            ScrollableList(hadiahList)
-            Grid(hadiahList)
+            Layout() //memanggil fungsi Layout
+            Image() //Menampilkan Gambar
+            Input() //Memanggil fungsi input nama pengguna
+            ScrollableList(hadiahList) //Memanggil dan menampilkan daftar hadiah yang dapat discroll
+            Grid(hadiahList) //menampilkan tata letak grid
         }
     }
 }
 
+// Fungsi komposisi untuk menangani tata letak
 @Composable
 fun Layout() {
     val configuration = LocalConfiguration.current
     if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        // Tata letak untuk orientasi landscape
         Row(modifier = Modifier.fillMaxWidth()) {
             Box(
                 modifier = Modifier
@@ -96,6 +101,7 @@ fun Layout() {
             }
         }
     } else {
+        // Tata letak untuk orientasi potrait
         Column(modifier = Modifier.fillMaxWidth()) {
             Box(
                 modifier = Modifier
@@ -117,12 +123,13 @@ fun Layout() {
     }
 }
 
+// Fungsi komposisi untuk menampilkan gambar sambutan
 @Composable
 fun Image() {
     Text("Selamat Datang!", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
     Spacer(modifier = Modifier.height(16.dp))
     Image(
-        painter = painterResource(id = R.drawable.merdeka),
+        painter = painterResource(id = R.drawable.merdeka), // Gambar logo kemerdekaan
         contentDescription = "Logo Kemerdekaan",
         modifier = Modifier
             .fillMaxWidth()
@@ -130,6 +137,7 @@ fun Image() {
     )
 }
 
+// Fungsi komposisi untuk input nama pengguna
 @Composable
 fun Input() {
     var text by remember { mutableStateOf("") }
@@ -141,7 +149,7 @@ fun Input() {
     ) {
         TextField(
             value = text,
-            onValueChange = { text = it },
+            onValueChange = { text = it }, // Memperbarui teks saat diubah
             label = { Text("Masukkan Nama Anda") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -152,15 +160,17 @@ fun Input() {
     }
 }
 
+// Fungsi komposisi untuk menampilkan daftar hadiah yang dapat discroll
 @Composable
 fun ScrollableList(hadiahList: List<Hadiah>) {
     LazyColumn {
         items(hadiahList) { hadiah ->
-            HadiahItem(hadiah)
+            HadiahItem(hadiah) // Memanggil komposisi item hadiah
         }
     }
 }
 
+// Fungsi komposisi untuk menampilkan setiap item hadiah
 @Composable
 fun HadiahItem(hadiah: Hadiah) {
     Card(
@@ -171,7 +181,7 @@ fun HadiahItem(hadiah: Hadiah) {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Image(
-                painter = painterResource(id = hadiah.imageResId),
+                painter = painterResource(id = hadiah.imageResId), // Menampilkan gambar hadiah
                 contentDescription = hadiah.namaHadiah,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -191,10 +201,11 @@ fun HadiahItem(hadiah: Hadiah) {
     }
 }
 
+// Fungsi komposisi untuk menampilkan tata letak grid hadiah
 @Composable
 fun Grid(hadiahList: List<Hadiah>) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
+        columns = GridCells.Fixed(2), // Dua kolom di grid
         modifier = Modifier.padding(8.dp)
     ) {
         items(hadiahList) { hadiah ->
@@ -210,7 +221,7 @@ fun Grid(hadiahList: List<Hadiah>) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Image(
-                        painter = painterResource(id = hadiah.imageResId),
+                        painter = painterResource(id = hadiah.imageResId),  // Menampilkan gambar hadiah
                         contentDescription = hadiah.namaHadiah,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -224,10 +235,11 @@ fun Grid(hadiahList: List<Hadiah>) {
     }
 }
 
+// Fungsi untuk preview tampilan layar utama
 @Preview(showBackground = true)
 @Composable
 fun PreviewMainScreen() {
-    TugasutsTheme {
+    TugasutsTheme {  // Menerapkan tema aplikasi untuk pratinjau
         MainScreen()
     }
 }
